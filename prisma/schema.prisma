@@ -1,0 +1,112 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Restaurants {
+  id          Int      @id @default(autoincrement())
+  name        String
+  main_image  String
+  images      String[]
+  description String
+  open_time   String
+  close_time  String
+  slug        String   @unique
+  price       PRICE
+
+  location_id Int
+  location    Locations @relation(fields: [location_id], references: [id])
+
+  cuisine_id Int
+  cuisine    Cuisines @relation(fields: [cuisine_id], references: [id])
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  items   Items[]
+  reviews Reviews[]
+
+  @@map("restaurants")
+}
+
+model Items {
+  id          Int    @id @default(autoincrement())
+  name        String
+  price       String
+  description String
+
+  restaurant_id Int
+  restaurant    Restaurants @relation(fields: [restaurant_id], references: [id])
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("items")
+}
+
+model Locations {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
+  restaurants Restaurants[]
+
+  @@map("locations")
+}
+
+model Cuisines {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
+  restaurants Restaurants[]
+
+  @@map("cuisines")
+}
+
+model Users {
+  id         Int       @id @default(autoincrement())
+  first_name String
+  last_name  String
+  city       String
+  password   String
+  email      String    @unique
+  phone      String
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  reviews    Reviews[]
+
+  @@map("users")
+}
+
+model Reviews {
+  id            Int         @id @default(autoincrement())
+  first_name    String
+  last_name     String
+  text          String
+  rating        Float
+  restaurant_id Int
+  restaurant    Restaurants @relation(fields: [restaurant_id], references: [id])
+  user_id       Int
+  user          Users       @relation(fields: [user_id], references: [id])
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("reviews")
+}
+
+enum PRICE {
+  CHEAP
+  REGULAR
+  EXPENSIVE
+}
