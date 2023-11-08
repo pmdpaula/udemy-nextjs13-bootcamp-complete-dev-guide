@@ -4,7 +4,9 @@ https://trt1br.udemy.com/course/the-nextjs-13-bootcamp-the-complete-developer-gu
 
 [Github Project](https://github.com/harblaith7/Next13-Udemy-Course/tree/main)
 
-### Lint
+[My Github Project](https://github.com/pmdpaula/udemy-nextjs13-bootcamp-complete-dev-guide)
+
+## Lint
 
 [Lint](https://medium.com/weekly-webtips/how-to-sort-imports-like-a-pro-in-typescript-4ee8afd7258a)
 
@@ -124,7 +126,40 @@ module.exports = {
 };
 ```
 
+- [Material UI](https://material-ui.com/pt/getting-started/installation/)
+
+```bash
+npm install @mui/material @emotion/react @emotion/styled
+```
+
 ## Aplicação
+
+- [Validação de básica de inputs](https://www.npmjs.com/package/validator)
+
+```bash
+npm i validator
+npm i -D @types/validator
+```
+
+[Encriptação de senha - bcrypt](https://www.npmjs.com/package/bcrypt)
+
+```bash
+npm i bcrypt
+npm i -D @types/bcrypt
+```
+
+[jose](https://www.npmjs.com/package/jose)
+
+```bash
+npm i jose
+```
+
+[JWT Coder - jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)
+
+```bash
+npm i jsonwebtoken
+npm i -D @types/jsonwebtoken
+```
 
 ## Back-end
 
