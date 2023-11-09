@@ -33,10 +33,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   });
 
   if (!user) {
-    return res.status(401).json({ message: 'Unauthorized request NU' });
+    return res.status(401).json({ errorMessage: 'Unauthorized request' });
   }
 
-  return res.status(200).send('');
+  return res.status(200).send({
+    id: user.id,
+    firstName: user.first_name,
+    lastName: user.last_name,
+    email: user.email,
+    phone: user.phone,
+    city: user.city,
+  });
 };
 
 export default handler;

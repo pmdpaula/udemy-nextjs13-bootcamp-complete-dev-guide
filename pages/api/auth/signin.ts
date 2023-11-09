@@ -1,5 +1,6 @@
 /* eslint-disable import/no-named-as-default-member */
 import bcrypt from 'bcrypt';
+import { setCookie } from 'cookies-next';
 import * as jose from 'jose';
 import { NextApiRequest, NextApiResponse } from 'next';
 import validator from 'validator';
@@ -35,31 +36,47 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(400).json({ errorMessage: errors[0] });
   }
 
-  const userWithEmail = await prisma.users.findUnique({
+  const user = await prisma.users.findUnique({
     where: {
       email,
     },
   });
 
-  if (!userWithEmail) {
-    return res.status(401).json({ errorMessage: 'Some data is wrong. ' });
+  if (!user) {
+    return res.status(401).json({ errorMessage: 'Email or password is invalid ' });
   }
 
-  const isPasswordValid = await bcrypt.compare(password, userWithEmail.password);
+  const isPasswordValid = await bcrypt.compare(password, user.password);
 
   if (!isPasswordValid) {
-    return res.status(401).json({ errorMessage: 'Some data is wrong. ' });
+    return res.status(401).json({ errorMessage: 'Email or password is invalid ' });
   }
 
   const alg = 'HS256';
   const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+
   const token = await new jose.SignJWT({ email })
     .setProtectedHeader({ alg })
     .setIssuedAt()
     .setExpirationTime('2h')
     .sign(secret);
 
-  res.status(201).send({ message: token });
+  setCookie('jwt', token, {
+    req,
+    res,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    path: '/',
+    maxAge: 60 * 24 * 6,
+  });
+
+  res.status(201).send({
+    firstName: user.first_name,
+    lastName: user.last_name,
+    email: user.email,
+    phone: user.phone,
+    city: user.city,
+  });
 };
 
 export default handler;

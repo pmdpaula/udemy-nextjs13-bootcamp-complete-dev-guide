@@ -1,5 +1,6 @@
 /* eslint-disable import/no-named-as-default-member */
 import bcrypt from 'bcrypt';
+import { setCookie } from 'cookies-next';
 import * as jose from 'jose';
 import { NextApiRequest, NextApiResponse } from 'next';
 import validator from 'validator';
@@ -64,7 +65,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
-    await prisma.users.create({
+    const user = await prisma.users.create({
       data: {
         first_name: firstName,
         last_name: lastName,
@@ -83,7 +84,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .setExpirationTime('2h')
       .sign(secret);
 
-    res.status(201).send({ message: token });
+    setCookie('jwt', token, {
+      req,
+      res,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      path: '/',
+      maxAge: 60 * 24 * 6,
+    });
+
+    res.status(201).send({
+      firstName: user.first_name,
+      lastName: user.last_name,
+      email: user.email,
+      phone: user.phone,
+      city: user.city,
+    });
   } catch (error) {
     res.status(500).json({ errorMessage: 'Something went wrong' });
   }

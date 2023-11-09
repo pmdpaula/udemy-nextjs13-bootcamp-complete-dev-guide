@@ -161,6 +161,18 @@ npm i jsonwebtoken
 npm i -D @types/jsonwebtoken
 ```
 
+[Axios](https://www.npmjs.com/package/axios)
+
+```bash
+npm i axios
+```
+
+[Cookies - cookies-next](https://www.npmjs.com/package/cookies-next)
+
+```bash
+npm i cookies-next
+```
+
 ## Back-end
 
 - [ORM - prisma](https://www.prisma.io/docs/getting-started/quickstart)

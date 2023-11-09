@@ -30,7 +30,6 @@ interface RestaurantMenuProps {
 
 const RestaurantMenu = async ({ params }: RestaurantMenuProps) => {
   const menu = await fetchRestaurantMenu(params.slug);
-  // console.log('🚀 ~ file: page.tsx:33 ~ RestaurantMenu ~ menu:', menu);
 
   return (
     <div className="bg-white w-[100%] rounded p-3 shadow">

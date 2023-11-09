@@ -44,6 +44,7 @@ export const AuthModalInputs = ({
           value={inputs.email}
           onChange={handleChangeInputs}
           name="email"
+          autoComplete="on"
         />
       </div>
 
@@ -73,9 +74,10 @@ export const AuthModalInputs = ({
         <input
           type="password"
           className="border rounded p-2 py-3 w-full"
-          placeholder="Passowrd"
+          placeholder="Password"
           value={inputs.password}
           onChange={handleChangeInputs}
+          name="password"
         />
       </div>
     </div>

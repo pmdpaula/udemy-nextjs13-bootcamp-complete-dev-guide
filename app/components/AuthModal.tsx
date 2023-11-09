@@ -1,9 +1,12 @@
+import { Alert, CircularProgress } from '@mui/material';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { AuthModalInputs } from './AuthModalInputs';
 import { SignUpDTO } from '../../dtos/SignUpDTO';
+import useAuth from '../../hooks/useAuth';
+import { AuthenticationContext } from '../context/AuthContext';
 
 const style = {
   position: 'absolute' as const,
@@ -22,6 +25,7 @@ interface AuthModalProps {
 
 export const AuthModal = ({ isSignIn }: AuthModalProps) => {
   const [open, setOpen] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
   const [inputs, setInputs] = useState<SignUpDTO>({
     firstName: '',
     lastName: '',
@@ -33,6 +37,8 @@ export const AuthModal = ({ isSignIn }: AuthModalProps) => {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const { signin, signup } = useAuth();
+  const { error, loading } = useContext(AuthenticationContext);
 
   function renderSignInOrSignOutContent(sigInContent: string, signOutContent: string) {
     return isSignIn ? sigInContent : signOutContent;
@@ -43,6 +49,37 @@ export const AuthModal = ({ isSignIn }: AuthModalProps) => {
 
     setInputs({ ...inputs, [name]: value });
   }
+
+  function handleClick() {
+    if (isSignIn) {
+      signin({ email: inputs.email, password: inputs.password, handleClose });
+    }
+
+    if (!isSignIn) {
+      signup({ ...inputs, handleClose });
+    }
+  }
+
+  useEffect(() => {
+    if (isSignIn) {
+      if (inputs.email && inputs.password) {
+        setIsDisabled(false);
+      }
+    }
+
+    if (!isSignIn) {
+      if (
+        inputs.firstName &&
+        inputs.lastName &&
+        inputs.email &&
+        inputs.phone &&
+        inputs.city &&
+        inputs.password
+      ) {
+        setIsDisabled(false);
+      }
+    }
+  }, [inputs]);
 
   return (
     <div>
@@ -60,32 +97,51 @@ export const AuthModal = ({ isSignIn }: AuthModalProps) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <div className="p-2 h-[600px]">
-            <div className="uppercase font-bold text-center pb-2 border-b mb-2">
-              <p className="text-sm">
-                {renderSignInOrSignOutContent('Sign in', 'Create an account')}
-              </p>
+          {loading ? (
+            <div className="py-24 p-2 h-[600px] flex justify-center">
+              <CircularProgress />
             </div>
+          ) : (
+            <div className="p-2 h-[600px]">
+              {error && (
+                <Alert
+                  severity="error"
+                  className="mb-4"
+                >
+                  {error}
+                </Alert>
+              )}
 
-            <div className="m-auto">
-              <h2 className="text-2xl font-light text-center">
-                {renderSignInOrSignOutContent(
-                  'Log into to your account',
-                  'Create your OpenTable account',
-                )}
-              </h2>
+              <div className="uppercase font-bold text-center pb-2 border-b mb-2">
+                <p className="text-sm">
+                  {renderSignInOrSignOutContent('Sign in', 'Create an account')}
+                </p>
+              </div>
 
-              <AuthModalInputs
-                inputs={inputs}
-                handleChangeInputs={handleChangeInputs}
-                isSignIn={isSignIn}
-              />
+              <div className="m-auto">
+                <h2 className="text-2xl font-light text-center">
+                  {renderSignInOrSignOutContent(
+                    'Log into to your account',
+                    'Create your OpenTable account',
+                  )}
+                </h2>
 
-              <button className="uppercase bg-red-600 w-full text-white p-3 rounded text-sm mb-5 mt-8 disabled:bg-gray-400 hover:bg-red-500">
-                {renderSignInOrSignOutContent('Sign in', 'Create an account')}
-              </button>
+                <AuthModalInputs
+                  inputs={inputs}
+                  handleChangeInputs={handleChangeInputs}
+                  isSignIn={isSignIn}
+                />
+
+                <button
+                  className="uppercase bg-red-600 w-full text-white p-3 rounded text-sm mb-5 mt-8 disabled:bg-gray-400 hover:bg-red-500"
+                  disabled={isDisabled}
+                  onClick={handleClick}
+                >
+                  {renderSignInOrSignOutContent('Sign in', 'Create an account')}
+                </button>
+              </div>
             </div>
-          </div>
+          )}
         </Box>
       </Modal>
     </div>
