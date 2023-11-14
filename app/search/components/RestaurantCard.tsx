@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { calculateReviewRatingAverage } from '../../../utils/calculateReviewRatingAverage';
 import { Price } from '../../components/Price';
 import Stars from '../../components/Stars';
-import { RestaurantDTO } from '../../dtos/RestaurantDTO';
+import { RestaurantDTO } from '../../../dtos/RestaurantDTO';
 
 interface RestaurantCardProps {
   restaurant: RestaurantDTO;

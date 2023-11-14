@@ -1,7 +1,7 @@
 import { Cuisines, Locations, PRICE } from '@prisma/client';
 import Link from 'next/link';
 
-import { SearchRestaurantParamsDTO } from '../../dtos/SearchRestaurantParamsDTO';
+import { SearchRestaurantParamsDTO } from '../../../dtos/SearchRestaurantParamsDTO';
 
 interface SearchSideBarProps {
   locations: Locations[];

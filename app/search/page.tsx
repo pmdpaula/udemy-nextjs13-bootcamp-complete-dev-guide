@@ -3,8 +3,8 @@ import { PrismaClient } from '@prisma/client';
 import { Header } from './components/Header';
 import { RestaurantCard } from './components/RestaurantCard';
 import { SearchSideBar } from './components/SearchSideBar';
-import { RestaurantDTO } from '../dtos/RestaurantDTO';
-import { SearchRestaurantParamsDTO } from '../dtos/SearchRestaurantParamsDTO';
+import { RestaurantDTO } from '../../dtos/RestaurantDTO';
+import { SearchRestaurantParamsDTO } from '../../dtos/SearchRestaurantParamsDTO';
 
 const prisma = new PrismaClient();
 

@@ -173,6 +173,13 @@ npm i axios
 npm i cookies-next
 ```
 
+[Seleção de datas - react-datepicker](https://www.npmjs.com/package/react-datepicker)
+
+```bash
+npm i react-datepicker
+npm i -D @types/react-datepicker
+```
+
 ## Back-end
 
 - [ORM - prisma](https://www.prisma.io/docs/getting-started/quickstart)

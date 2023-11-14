@@ -13,4 +13,6 @@ export type RestaurantDTO = {
     name: string;
   };
   reviews: Reviews[];
+  OpenTime: string;
+  CloseTime: string;
 };

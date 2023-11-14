@@ -11,7 +11,7 @@ import {
   useState,
 } from 'react';
 
-import { UserDTO } from '../dtos/UserDTO';
+import { UserDTO } from '../../dtos/UserDTO';
 
 interface AuthContextProps {
   children: ReactNode;
